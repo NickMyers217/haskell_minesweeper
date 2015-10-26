@@ -7,6 +7,27 @@
   (major1) == 4 && (major2) <  8 || \
   (major1) == 4 && (major2) == 8 && (minor) <= 1)
 
+/* package random-1.1 */
+#define VERSION_random "1.1"
+#define MIN_VERSION_random(major1,major2,minor) (\
+  (major1) <  1 || \
+  (major1) == 1 && (major2) <  1 || \
+  (major1) == 1 && (major2) == 1 && (minor) <= 0)
+
+/* tool alex-3.1.4 */
+#define TOOL_VERSION_alex "3.1.4"
+#define MIN_TOOL_VERSION_alex(major1,major2,minor) (\
+  (major1) <  3 || \
+  (major1) == 3 && (major2) <  1 || \
+  (major1) == 3 && (major2) == 1 && (minor) <= 4)
+
+/* tool c2hs-0.26.1 */
+#define TOOL_VERSION_c2hs "0.26.1"
+#define MIN_TOOL_VERSION_c2hs(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  26 || \
+  (major1) == 0 && (major2) == 26 && (minor) <= 1)
+
 /* tool cpphs-1.19.3 */
 #define TOOL_VERSION_cpphs "1.19.3"
 #define MIN_TOOL_VERSION_cpphs(major1,major2,minor) (\
@@ -84,5 +105,5 @@
   (major1) == 2 && (major2) <  25 || \
   (major1) == 2 && (major2) == 25 && (minor) <= 0)
 
-#define CURRENT_PACKAGE_KEY "mines_7HyNuAY9XQK0eRhAEVMDt6"
+#define CURRENT_PACKAGE_KEY "mines_5gSiPhg7IXgISd82llzMIe"
 
