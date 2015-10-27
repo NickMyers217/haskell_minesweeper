@@ -27,7 +27,7 @@ getCell b (x,y) = b !! y !! x
 
 -- | Update a list with a new value at a given index
 (!!=) :: [a] -> (Int, a) -> [a]
-(!!=) xs (i,v) 
+(!!=) xs (i,v)
     | i > -1 && i < length xs = take i xs ++ [v] ++ drop (i + 1) xs
     | otherwise               = error "Can't modify the list at the given index."
 
@@ -54,16 +54,14 @@ flagCell :: Board -> Pos -> Board
 flagCell = changeCell flag
 
 
--- | Returns [Pos] representing the Cell's neighbors
+-- | Returns a [Pos] representing the Cell's neighbors
 getNeighbors :: Board -> Pos -> [Pos]
 getNeighbors b (x,y)    = filter (`elem` boardIs) . map addVs $ vectors
-    where vectors       = [ (-1,-1), (0,-1)
-                          , (1,-1), (-1,0)
-                          , (1,0), (-1,1)
-                          , (0,1), (1,1) ]
+    where vectors       = [ (-1,-1) , ( 0,-1) , ( 1,-1) , (-1, 0)
+                          , ( 1, 0) , (-1, 1) , ( 0, 1) , ( 1, 1) ]
+          addVs (dx,dy) = (x + dx, y + dy)
           lazyIs        = [ [ (x,y) | x <- [0..] ] | y <- [0..] ]
           boardIs       = map snd . concat $ zipWith zip b lazyIs
-          addVs (dx,dy) = (x + dx, y + dy)
 
 
 -- | Reveal a Hidden Cell on a given Board at a given Pos
