@@ -29,12 +29,38 @@ isShown c =
       Flag  cell  -> isShown cell
       _           -> False
 
+-- | Determine if a Cell is Empty
+isEmpty :: Cell -> Bool
+isEmpty c =
+    case c of
+      Empty _ -> True
+      _       -> False
+
+-- | Determine if a Cell is a Bomb
+isBomb :: Cell -> Bool
+isBomb c =
+    case c of
+      Bomb _ -> True
+      _      -> False
+
+-- | Make a Cell a Bomb
+makeBomb :: Cell -> Cell
+makeBomb c
+    | isShown c = Bomb Shown
+    | otherwise = Bomb Hidden
+
+-- | Make a Cell a Num
+makeNum :: Int -> Cell -> Cell
+makeNum i c
+    | isShown c = Num i Shown
+    | otherwise = Num i Hidden
+
 -- | Handles the flagging of cells:
 -- | Flags a Hidden Num, Bomb, or Empty
 -- | Unflags a Flag
 -- | Does nothing to Shown Num, Bomb, or Empty
-flagCell :: Cell -> Cell
-flagCell c =
+flag :: Cell -> Cell
+flag c =
     case c of
       n@(Num _ Hidden) -> Flag n
       b@(Bomb Hidden)  -> Flag b
@@ -46,11 +72,10 @@ flagCell c =
 -- | Reveals a Hidden Num, Bomb, or Empty
 -- | Does nothing to a Flag
 -- | Does nothing to a Shown Num, Bomb, or Empty
-revealCell :: Cell -> Cell
-revealCell c =
+reveal :: Cell -> Cell
+reveal c =
     case c of
       Num i Hidden -> Num i Shown
       Bomb Hidden  -> Bomb Shown
       Empty Hidden -> Empty Shown
       _            -> c
-

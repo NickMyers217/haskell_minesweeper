@@ -32,13 +32,48 @@ getCell b (x,y) = b !! y !! x
     | otherwise               = error "Can't modify the list at the given index."
 
 
--- | Change a Board's Cell by using a given function at that Pos
-changeCell :: Board -> (Cell -> Cell) -> Pos -> Board
-changeCell b f (x, y) = b !!= (y, row !!= (x, f cell))
-    where row  = b !! y
+-- | Change a Board's Cell by using a given function at a Pos
+changeCell :: (Cell -> Cell) -> Board -> Pos -> Board
+changeCell f b (x, y) = b !!= (y, row !!= (x, f cell))
+    where row  = b   !! y
           cell = row !! x
 
 
--- | Flags a cell on the board
-flagBoardCell :: Board -> Pos -> Board
-flagBoardCell b = changeCell b flagCell
+-- | Turns a Cell into a Bomb on a Board at a given Pos
+bombCell :: Board -> Pos -> Board
+bombCell = changeCell makeBomb
+
+
+-- | Turns a Cell into a Num on a Board at a given Pos
+numCell :: Int -> Board -> Pos -> Board
+numCell i = changeCell $ makeNum i
+
+
+-- | Flags a Cell on a given Board at a given Pos
+flagCell :: Board -> Pos -> Board
+flagCell = changeCell flag
+
+
+-- | Returns [Pos] representing the Cell's neighbors
+getNeighbors :: Board -> Pos -> [Pos]
+getNeighbors b (x,y)    = filter (`elem` boardIs) . map addVs $ vectors
+    where vectors       = [ (-1,-1), (0,-1)
+                          , (1,-1), (-1,0)
+                          , (1,0), (-1,1)
+                          , (0,1), (1,1) ]
+          lazyIs        = [ [ (x,y) | x <- [0..] ] | y <- [0..] ]
+          boardIs       = map snd . concat $ zipWith zip b lazyIs
+          addVs (dx,dy) = (x + dx, y + dy)
+
+
+-- | Reveal a Hidden Cell on a given Board at a given Pos
+-- | Nums and Bombs are revealed normally
+-- | Empty Cells need to recurse until they reach the closest Nums
+-- | If this is passed a Shown Cell nothing should happen
+revealCell :: Board -> Pos -> Board
+revealCell b p
+    | isShown c         = b
+    | not . isEmpty $ c = revPos p
+    | otherwise         = foldl revealCell (revPos p) (getNeighbors b p)
+    where c      = getCell b p
+          revPos = changeCell reveal b
