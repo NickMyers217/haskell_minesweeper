@@ -4,6 +4,7 @@ module Main where
 import Cell
 import Board
 import Minesweeper
+import TermIO
 
 -- | The main function
 main :: IO ()
