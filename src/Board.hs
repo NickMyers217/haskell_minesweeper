@@ -20,6 +20,13 @@ newBoard :: Size -> Board
 newBoard (cols,rows) = [ [ Empty Hidden | c <- [1..cols] ]
                                         | r <- [1..rows] ]
 
+
+-- | Returns a [[Pos]] representing all the positions on the Board
+indexBoard :: Board -> [[Pos]]
+indexBoard b = map (map snd) $ zipWith zip b indexes
+    where indexes = [ [ (x,y) | x <- [0..] ] | y <- [0..] ]
+
+
 -- | Get a Cell from a Board at a given Pos
 getCell :: Board -> Pos -> Cell
 getCell b (x,y) = b !! y !! x
@@ -56,12 +63,25 @@ flagCell = changeCell flag
 
 -- | Returns a [Pos] representing the Cell's neighbors
 getNeighbors :: Board -> Pos -> [Pos]
-getNeighbors b (x,y)    = filter (`elem` boardIs) . map addVs $ vectors
+getNeighbors b (x,y)    = filter (`elem` (concat $ indexBoard b)) . map addVs $ vectors
     where vectors       = [ (-1,-1) , ( 0,-1) , ( 1,-1) , (-1, 0)
                           , ( 1, 0) , (-1, 1) , ( 0, 1) , ( 1, 1) ]
           addVs (dx,dy) = (x + dx, y + dy)
-          lazyIs        = [ [ (x,y) | x <- [0..] ] | y <- [0..] ]
-          boardIs       = map snd . concat $ zipWith zip b lazyIs
+
+
+-- | Update a Cells Bomb count
+bombCount :: Board -> Pos -> Cell
+bombCount b p
+    | (not . isBomb $ cell) && count /= 0 = makeNum count cell
+    | otherwise = cell
+    where cell = getCell b p
+          neighbors = map (getCell b) (getNeighbors b p)
+          count = length . filter isBomb $ neighbors
+
+
+-- | Reveals the entire board
+revealBoard :: Board -> Board
+revealBoard = map $ map reveal
 
 
 -- | Reveal a Hidden Cell on a given Board at a given Pos
@@ -75,3 +95,8 @@ revealCell b p
     | otherwise         = foldl revealCell (revPos p) (getNeighbors b p)
     where c      = getCell b p
           revPos = changeCell reveal b
+
+
+-- | Calculates all the Nums on the board
+calculateBoardNums :: Board -> Board
+calculateBoardNums b = map (map (\p -> bombCount b p)) (indexBoard b)

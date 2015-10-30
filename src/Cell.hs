@@ -33,15 +33,25 @@ isShown c =
 isEmpty :: Cell -> Bool
 isEmpty c =
     case c of
-      Empty _ -> True
-      _       -> False
+      Empty _   -> True
+      Flag cell -> isEmpty cell
+      _         -> False
 
 -- | Determine if a Cell is a Bomb
 isBomb :: Cell -> Bool
 isBomb c =
     case c of
-      Bomb _ -> True
-      _      -> False
+      Bomb _    -> True
+      Flag cell -> isBomb cell
+      _         -> False
+
+-- | Determine if a cell is a Num
+isNum :: Cell -> Bool
+isNum c =
+    case c of
+      Num _ _   -> True
+      Flag cell -> isNum cell
+      _         -> False
 
 -- | Make a Cell a Bomb
 makeBomb :: Cell -> Cell
