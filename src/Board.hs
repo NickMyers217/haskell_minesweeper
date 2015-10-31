@@ -3,7 +3,7 @@
 -}
 module Board where
 
-import Cell
+import           Cell
 
 -- | A Size is the (cols, rows) for a board
 type Size  = (Int, Int)
@@ -17,8 +17,7 @@ type Board = [[Cell]]
 
 -- | Creates a new Board of a given Size
 newBoard :: Size -> Board
-newBoard (cols,rows) = [ [ Empty Hidden | c <- [1..cols] ]
-                                        | r <- [1..rows] ]
+newBoard (cols,rows) = [ [ Empty Hidden | _ <- [1..cols] ] | _ <- [1..rows] ]
 
 
 -- | Returns a [[Pos]] representing all the positions on the Board
@@ -46,9 +45,19 @@ changeCell f b (x, y) = b !!= (y, row !!= (x, f cell))
           cell = row !! x
 
 
+-- | Change multiple Cells
+changeCells :: (Board -> Pos -> Board) -> Board -> [Pos] -> Board
+changeCells = foldl
+
+
 -- | Turns a Cell into a Bomb on a Board at a given Pos
 bombCell :: Board -> Pos -> Board
 bombCell = changeCell makeBomb
+
+
+-- | Turns multiple Pos into a Bomb
+bombCells :: Board -> [Pos] -> Board
+bombCells = changeCells bombCell
 
 
 -- | Turns a Cell into a Num on a Board at a given Pos
@@ -69,16 +78,6 @@ getNeighbors b (x,y)    = filter (`elem` (concat $ indexBoard b)) . map addVs $ 
           addVs (dx,dy) = (x + dx, y + dy)
 
 
--- | Update a Cells Bomb count
-bombCount :: Board -> Pos -> Cell
-bombCount b p
-    | (not . isBomb $ cell) && count /= 0 = makeNum count cell
-    | otherwise = cell
-    where cell = getCell b p
-          neighbors = map (getCell b) (getNeighbors b p)
-          count = length . filter isBomb $ neighbors
-
-
 -- | Reveals the entire board
 revealBoard :: Board -> Board
 revealBoard = map $ map reveal
@@ -92,11 +91,21 @@ revealCell :: Board -> Pos -> Board
 revealCell b p
     | isShown c         = b
     | not . isEmpty $ c = revPos p
-    | otherwise         = foldl revealCell (revPos p) (getNeighbors b p)
+    | otherwise         = changeCells revealCell (revPos p) (getNeighbors b p)
     where c      = getCell b p
           revPos = changeCell reveal b
 
 
--- | Calculates all the Nums on the board
+-- | Update a Cells Bomb count
+bombCount :: Board -> Pos -> Cell
+bombCount b p
+    | isEmpty cell && count /= 0 = makeNum count cell
+    | otherwise                  = cell
+    where cell      = getCell b p
+          neighbors = map (getCell b) (getNeighbors b p)
+          count     = length . filter isBomb $ neighbors
+
+
+-- | Calculates all the Nums on the board based on their neigboring Bombs
 calculateBoardNums :: Board -> Board
-calculateBoardNums b = map (map (\p -> bombCount b p)) (indexBoard b)
+calculateBoardNums b = map (map $ bombCount b) (indexBoard b)
