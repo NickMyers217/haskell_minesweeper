@@ -55,46 +55,79 @@ numCell numCell63,64
 numCell numCell64,65
 flagCell flagCell68,69
 flagCell flagCell69,70
-getNeighbors getNeighbors73,74
-getNeighbors getNeighbors74,75
-revealBoard revealBoard81,82
-revealBoard revealBoard82,83
-revealCell revealCell89,90
-revealCell revealCell90,91
+revealBoard revealBoard73,74
+revealBoard revealBoard74,75
+revealCell revealCell81,82
+revealCell revealCell82,83
+getNeighbors getNeighbors91,92
+getNeighbors getNeighbors92,93
 bombCount bombCount99,100
 bombCount bombCount100,101
 calculateBoardNums calculateBoardNums109,110
 calculateBoardNums calculateBoardNums110,111
 
-./src/Main.hs,55
-module Main Main1,2
-main main9,10
-main main10,11
+./src/Main.hs,56
+module Main Main3,4
+main main11,12
+main main12,13
 
-./src/Minesweeper.hs,481
-data Difficulty Difficulty13,14
-data Difficulty = EasyEasy13,14
-                | MediumMedium14,15
-                | HardHard15,16
-                | InsaneInsane16,17
-                | Custom Custom17,18
-data Minesweeper Minesweeper23,24
-data Minesweeper = Game Game23,24
-data Minesweeper = Game { diff diff23,24
-                        , board board24,25
-diffSize diffSize29,30
-diffSize diffSize30,31
-emptyGame emptyGame39,40
-emptyGame emptyGame40,41
+./src/Minesweeper.hs,1149
+type BombCount BombCount11,12
+data Difficulty Difficulty20,21
+data Difficulty = EasyEasy20,21
+                | MediumMedium21,22
+                | HardHard22,23
+                | InsaneInsane23,24
+                | Custom Custom24,25
+data Action Action29,30
+data Action = LeftClickLeftClick29,30
+            | RightClickRightClick30,31
+type Move Move35,36
+data Minesweeper Minesweeper41,42
+data Minesweeper = Game Game41,42
+data Minesweeper = Game { diff diff41,42
+                        , board board42,43
+diffSize diffSize47,48
+diffSize diffSize48,49
+diffBombs diffBombs57,58
+diffBombs diffBombs58,59
+randomList randomList67,68
+randomList randomList68,69
+generateBombs generateBombs72,73
+generateBombs generateBombs73,74
+generateNums generateNums84,85
+generateNums generateNums85,86
+emptyGame emptyGame89,90
+emptyGame emptyGame90,91
+setupGame setupGame96,97
+setupGame setupGame97,98
+revealGame revealGame101,102
+revealGame revealGame102,103
+stepGame stepGame106,107
+stepGame stepGame107,108
+isLost isLost114,115
+isLost isLost115,116
+isWon isWon119,120
+isWon isWon120,121
 
-./src/TermIO.hs,188
+./src/TermIO.hs,450
 module TermIO TermIO5,6
-showCell showCell13,14
-showCell showCell14,15
-showBoard showBoard22,23
-showBoard showBoard23,24
-printBoard printBoard25,26
-printBoard printBoard26,27
+showCell showCell15,16
+showCell showCell16,17
+showBoard showBoard26,27
+showBoard showBoard27,28
+printBoard printBoard31,32
+printBoard printBoard32,33
+printGame printGame36,37
+printGame printGame37,38
+getPos getPos41,42
+getPos getPos42,43
+getAction getAction51,52
+getAction getAction52,53
+getMove getMove62,63
+getMove getMove63,64
+playTermGame playTermGame70,71
+playTermGame playTermGame71,72
 
 ./src/Cell.hs,584
 data Visibility Visibility6,7

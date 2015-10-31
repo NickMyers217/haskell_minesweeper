@@ -70,14 +70,6 @@ flagCell :: Board -> Pos -> Board
 flagCell = changeCell flag
 
 
--- | Returns a [Pos] representing the Cell's neighbors
-getNeighbors :: Board -> Pos -> [Pos]
-getNeighbors b (x,y)    = filter (`elem` (concat $ indexBoard b)) . map addVs $ vectors
-    where vectors       = [ (-1,-1) , ( 0,-1) , ( 1,-1) , (-1, 0)
-                          , ( 1, 0) , (-1, 1) , ( 0, 1) , ( 1, 1) ]
-          addVs (dx,dy) = (x + dx, y + dy)
-
-
 -- | Reveals the entire board
 revealBoard :: Board -> Board
 revealBoard = map $ map reveal
@@ -94,6 +86,14 @@ revealCell b p
     | otherwise         = changeCells revealCell (revPos p) (getNeighbors b p)
     where c      = getCell b p
           revPos = changeCell reveal b
+
+
+-- | Returns a [Pos] representing the Cell's neighbors
+getNeighbors :: Board -> Pos -> [Pos]
+getNeighbors b (x,y)    = filter (`elem` (concat $ indexBoard b)) . map addVs $ vectors
+    where vectors       = [ (-1,-1) , ( 0,-1) , ( 1,-1) , (-1, 0)
+                          , ( 1, 0) , (-1, 1) , ( 0, 1) , ( 1, 1) ]
+          addVs (dx,dy) = (x + dx, y + dy)
 
 
 -- | Update a Cells Bomb count

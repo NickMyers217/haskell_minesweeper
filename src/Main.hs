@@ -1,11 +1,13 @@
--- | The Main module
+{- |
+ This Module handles playing Games of Minesweeper
+-}
 module Main where
 
-import Cell
-import Board
-import Minesweeper
-import TermIO
+
+import           Minesweeper
+import           TermIO
+
 
 -- | The main function
 main :: IO ()
-main = putStrLn "Hello world!"
+main = playTermGame $ setupGame Medium

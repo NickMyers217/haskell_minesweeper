@@ -16,11 +16,11 @@ version :: Version
 version = Version [0,1,0,0] []
 bindir, libdir, datadir, libexecdir, sysconfdir :: FilePath
 
-bindir     = "/home/ogremagi/Documents/code/haskell/minesweeper/.cabal-sandbox/bin"
-libdir     = "/home/ogremagi/Documents/code/haskell/minesweeper/.cabal-sandbox/lib/x86_64-linux-ghc-7.10.2/minesweeper-0.1.0.0-7HyNuAY9XQK0eRhAEVMDt6"
-datadir    = "/home/ogremagi/Documents/code/haskell/minesweeper/.cabal-sandbox/share/x86_64-linux-ghc-7.10.2/minesweeper-0.1.0.0"
-libexecdir = "/home/ogremagi/Documents/code/haskell/minesweeper/.cabal-sandbox/libexec"
-sysconfdir = "/home/ogremagi/Documents/code/haskell/minesweeper/.cabal-sandbox/etc"
+bindir     = "/home/ogremagi/Documents/haskell/haskell_minesweeper/.cabal-sandbox/bin"
+libdir     = "/home/ogremagi/Documents/haskell/haskell_minesweeper/.cabal-sandbox/lib/x86_64-linux-ghc-7.10.2/minesweeper-0.1.0.0-5gSiPhg7IXgISd82llzMIe"
+datadir    = "/home/ogremagi/Documents/haskell/haskell_minesweeper/.cabal-sandbox/share/x86_64-linux-ghc-7.10.2/minesweeper-0.1.0.0"
+libexecdir = "/home/ogremagi/Documents/haskell/haskell_minesweeper/.cabal-sandbox/libexec"
+sysconfdir = "/home/ogremagi/Documents/haskell/haskell_minesweeper/.cabal-sandbox/etc"
 
 getBinDir, getLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
 getBinDir = catchIO (getEnv "minesweeper_bindir") (\_ -> return bindir)
